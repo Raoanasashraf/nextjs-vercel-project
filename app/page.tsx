@@ -1,66 +1,64 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Hero from './components/Hero';
+import Feature from './components/Feature';
+import StoreProduct from './components/StoreProduct';
+import Newsletter from './components/Newsletter';
+import { products, gases } from '@/data/products';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Hero />
+      <Feature />
+      <section id="product1" className="section-p1">
+        <h2 style={{ paddingTop: '10px' }}>Feature Products</h2>
+        <p>All Gas Appliances </p>
+        <div
+          className="pro-container"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingTop: '20px',
+            flexWrap: 'wrap',
+          }}
+        >
+          {products.map((product) => (
+            <StoreProduct key={product.id} product={product} />
+          ))}
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <section
+        id="banner"
+        className="section-m1 section-p1"
+        style={{ paddingBottom: '20px' }}
+      >
+        <h4>Repairing Services</h4>
+        <h2>Exclusive Deals on Accessories</h2>
+        <Link href="/shop">
+          <button className="normal">Explore More</button>
+        </Link>
+      </section>
+
+      <section id="product1">
+        <div>
+          <h2 style={{ fontWeight: 500 }}>Available Gases</h2>
         </div>
-      </main>
-    </div>
+        <div
+          className="pro-container"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            paddingTop: '20px',
+            flexWrap: 'wrap',
+          }}
+        >
+          {gases.map((product) => (
+            <StoreProduct key={product.id} product={product} />
+          ))}
+        </div>
+      </section>
+      <Newsletter />
+    </>
   );
 }
