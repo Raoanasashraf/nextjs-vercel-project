@@ -10,7 +10,11 @@ export default function Shop() {
         <>
             <section id="page-header">
                 <h2>#Stay Home</h2>
+<<<<<<< HEAD
         
+=======
+                <p>Save more with coupons & up to 70% off!</p>
+>>>>>>> 1bdb3a0aa4dcf90029423204d61b6539301ada25
             </section>
 
             <section id="product1" className="section-p1">
