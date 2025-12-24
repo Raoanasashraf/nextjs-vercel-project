@@ -5,20 +5,16 @@ import Newsletter from "@/app/components/Newsletter";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
-    const { cart, removeFromCart } = useCart();
+    const router = useRouter();
+    const { cart, removeFromCart, updateQuantity, getTotalPrice } = useCart();
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
         setIsClient(true);
     }, []);
-
-    const calculateSubtotal = () => {
-        // Assuming price is "0" for now as per data, but logic is here
-        // If we had real prices: parseFloat(item.price) * item.quantity
-        return cart.reduce((total, item) => total + (parseFloat(item.price) || 0) * item.quantity, 0);
-    };
 
     if (!isClient) return null; // Prevent hydration mismatch
 
@@ -60,7 +56,35 @@ export default function Cart() {
                                     <td>{item.name}</td>
                                     <td>Rs {item.price}</td>
                                     <td>
-                                        <input type="number" value={item.quantity} readOnly />
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                style={{
+                                                    padding: '5px 10px',
+                                                    cursor: 'pointer',
+                                                    background: '#088178',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '4px'
+                                                }}
+                                            >
+                                                -
+                                            </button>
+                                            <span style={{ minWidth: '30px', textAlign: 'center' }}>{item.quantity}</span>
+                                            <button
+                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                style={{
+                                                    padding: '5px 10px',
+                                                    cursor: 'pointer',
+                                                    background: '#088178',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '4px'
+                                                }}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
                                     </td>
                                     <td>Rs {(parseFloat(item.price) || 0) * item.quantity}</td>
                                 </tr>
@@ -84,7 +108,7 @@ export default function Cart() {
                         <tbody>
                             <tr>
                                 <td>Cart Subtotal</td>
-                                <td>Rs {calculateSubtotal()}</td>
+                                <td>Rs {getTotalPrice().toFixed(2)}</td>
                             </tr>
                             <tr>
                                 <td>Shipping</td>
@@ -92,11 +116,18 @@ export default function Cart() {
                             </tr>
                             <tr>
                                 <td><strong>Total</strong></td>
-                                <td><strong>Rs {calculateSubtotal()}</strong></td>
+                                <td><strong>Rs {getTotalPrice().toFixed(2)}</strong></td>
                             </tr>
                         </tbody>
                     </table>
-                    <button className="normal">Proceed to checkout</button>
+                    <button
+                        className="normal"
+                        onClick={() => router.push('/checkout')}
+                        disabled={cart.length === 0}
+                        style={{ opacity: cart.length === 0 ? 0.5 : 1, cursor: cart.length === 0 ? 'not-allowed' : 'pointer' }}
+                    >
+                        Proceed to checkout
+                    </button>
                 </div>
             </section>
 
